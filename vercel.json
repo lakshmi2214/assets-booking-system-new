@@ -1,0 +1,21 @@
+{
+    "version": 2,
+    "rewrites": [
+        {
+            "source": "/api/v1/(.*)",
+            "destination": "/backend/asset_manager/wsgi.py"
+        },
+        {
+            "source": "/admin/(.*)",
+            "destination": "/backend/asset_manager/wsgi.py"
+        },
+        {
+            "source": "/init-db/(.*)",
+            "destination": "/backend/asset_manager/wsgi.py"
+        },
+        {
+            "source": "/(.*)",
+            "destination": "/frontend/public/index.html"
+        }
+    ]
+}
