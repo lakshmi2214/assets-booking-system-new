@@ -1,0 +1,306 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --primary: #6366f1;
+  --primary-hover: #4f46e5;
+  --secondary: #64748b;
+  --accent: #f43f5e;
+  --background: #f8fafc;
+  --card-bg: #ffffff;
+  --text-main: #0f172a;
+  --text-muted: #64748b;
+  --glass: rgba(255, 255, 255, 0.7);
+  --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  --radius-lg: 1rem;
+  --radius-xl: 1.5rem;
+}
+
+body {
+  background-color: var(--background);
+  font-family: 'Outfit', sans-serif;
+  color: var(--text-main);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.8s ease-out forwards;
+}
+
+.animate-slide-up {
+  animation: slideUp 0.8s ease-out forwards;
+}
+
+/* Premium Card Styles */
+.premium-card {
+  background: var(--card-bg);
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  border-radius: var(--radius-lg);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: var(--shadow-sm);
+}
+
+.premium-card:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--primary);
+}
+
+.glass-morphism {
+  background: var(--glass);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* Button Refinement */
+.btn-premium {
+  padding: 0.75rem 1.75rem;
+  border-radius: 9999px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.btn-premium-primary {
+  background: var(--primary);
+  color: white;
+  border: none;
+  box-shadow: 0 4px 14px 0 rgba(99, 102, 241, 0.39);
+}
+
+.btn-premium-primary:hover {
+  background: var(--primary-hover);
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(99, 102, 241, 0.23);
+  color: white;
+}
+
+.btn-premium-outline {
+  background: transparent;
+  color: var(--text-main);
+  border: 2px solid var(--text-main);
+}
+
+.btn-premium-outline:hover {
+  background: var(--text-main);
+  color: white;
+}
+
+/* Filter & Menu Bar Buttons */
+/* Filter & Menu Bar Buttons */
+.filter-btn {
+  border-radius: 12px !important;
+  font-weight: 600 !important;
+  letter-spacing: -0.2px !important;
+  padding: 0.6rem 1.2rem !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  border: 1.5px solid rgba(0, 0, 0, 0.1) !important;
+  background: white !important;
+  color: var(--text-main) !important;
+}
+
+.filter-btn:hover {
+  border-color: var(--primary) !important;
+  background: rgba(99, 102, 241, 0.05) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.filter-btn-active {
+  background: var(--primary) !important;
+  color: white !important;
+  border-color: var(--primary) !important;
+  box-shadow: 0 4px 14px rgba(99, 102, 241, 0.3);
+}
+
+.filter-dropdown .dropdown-toggle::after {
+  margin-left: 0.5rem;
+  vertical-align: 0.2em;
+}
+
+.filter-dropdown .dropdown-menu {
+  z-index: 9999 !important;
+  /* Ensure it stays above everything */
+  border-radius: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: var(--shadow-lg);
+  padding: 0.5rem;
+  margin-top: 0.5rem !important;
+  animation: slideUp 0.3s ease-out;
+}
+
+.filter-dropdown .dropdown-item {
+  border-radius: 6px;
+  padding: 0.6rem 1rem;
+  font-weight: 500;
+  color: var(--text-main);
+  transition: all 0.2s ease;
+}
+
+.filter-dropdown .dropdown-item:hover {
+  background: rgba(99, 102, 241, 0.08);
+  color: var(--primary);
+}
+
+.filter-dropdown .dropdown-item.active {
+  background: var(--primary);
+  color: white;
+}
+
+/* Main Navigation Tuning */
+.navbar {
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  background: rgba(15, 23, 42, 0.85) !important;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.nav-link {
+  color: rgba(255, 255, 255, 0.7) !important;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  position: relative;
+  padding: 0.5rem 1rem !important;
+}
+
+.nav-link:hover {
+  color: white !important;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: var(--primary);
+  transition: all 0.3s ease;
+  transform: translateX(-50%);
+}
+
+.nav-link:hover::after {
+  width: 40%;
+}
+
+.btn-premium-primary {
+  background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+  border: none !important;
+  font-weight: 700 !important;
+  padding: 0.6rem 1.5rem !important;
+  border-radius: 10px !important;
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3) !important;
+  color: white !important;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--background);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary);
+}
+
+/* Asset Card Refinements */
+.asset-card {
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background: white;
+}
+
+.asset-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 24px -10px rgba(0, 0, 0, 0.1);
+  border-color: var(--primary);
+}
+
+.asset-img-container {
+  height: 350px;
+  /* Even taller for maximum visual impact */
+  overflow: hidden;
+  position: relative;
+  background: #f9fafb;
+  /* Studio-style light gray background */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 15px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+}
+
+.asset-card-img {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  transition: transform 0.4s ease;
+}
+
+.asset-card:hover .asset-card-img {
+  transform: scale(1.05);
+}
+
+.asset-status-badge {
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  font-size: 0.65rem;
+  padding: 0.4em 0.8em;
+  border-radius: 6px;
+}
+
+.asset-card-title {
+  font-weight: 700;
+  font-size: 0.95rem;
+  /* Reduced to prioritize image */
+  margin-bottom: 0.2rem;
+  color: var(--text-main);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.asset-card-body {
+  padding: 0.7rem 1.2rem;
+}

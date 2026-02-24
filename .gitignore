@@ -1,0 +1,49 @@
+# Dependencies
+node_modules/
+**/node_modules/
+venv/
+**/venv/
+.venv/
+**/.venv/
+env/
+**/env/
+
+# Python
+__pycache__/
+**/__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Editors
+.vscode/
+**/.vscode/
+.idea/
+**/.idea/
+.DS_Store
+**/.DS_Store
+
+# Build/Artifacts
+dist/
+**/dist/
+build/
+**/build/
+.vercel/
+**/.vercel/
+*.log
+
+# Database
+db.sqlite3
+**/db.sqlite3
+
+# Specific Large Content
+frontend/android/
+frontend/ios/
+frontend/resources/
+front/node_modules/
+frontend/node_modules/
+.qodo/
+.zencoder/
+.zenflow/
+frontend/replay_pid*.log
+staged_files.txt
