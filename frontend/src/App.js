@@ -12,7 +12,7 @@ import VerifyEmail from './VerifyEmail';
 import Footer from './Footer';
 import ChatBot from './ChatBot';
 
-import { API_BASE, isStandaloneMode, setStandaloneMode } from './auth';
+import { API_BASE } from './auth';
 
 function App() {
   const [user, setUser] = useState(null);
