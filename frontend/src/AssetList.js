@@ -18,21 +18,9 @@ export default function AssetList() {
     let isMounted = true;
 
     const loadData = async () => {
-      // 1. Check for standalone mode
-      const useMock = localStorage.getItem('standalone_mode') === 'true';
-
-      if (useMock) {
-        if (isMounted) {
-          setAssets(MOCK_ASSETS);
-          setCategories(MOCK_CATEGORIES);
-        }
-        return;
-      }
-
-      // 2. Try fetch with timeout
       try {
         const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 5000);
+        const timeoutId = setTimeout(() => controller.abort(), 8000);
 
         const [assetsRes, categoriesRes] = await Promise.all([
           fetch(`${API_BASE}/api/v1/assets/`, {
@@ -47,31 +35,16 @@ export default function AssetList() {
 
         clearTimeout(timeoutId);
 
-        let aData = [];
-        let cData = [];
-
-        if (assetsRes.ok) aData = await assetsRes.json();
-        if (categoriesRes.ok) cData = await categoriesRes.json();
-
         if (isMounted) {
-          if (Array.isArray(aData) && aData.length > 0) {
-            setAssets(aData);
-          } else {
-            setAssets(MOCK_ASSETS);
+          if (assetsRes.ok) {
+            setAssets(await assetsRes.json());
           }
-
-          if (Array.isArray(cData) && cData.length > 0) {
-            setCategories(cData);
-          } else {
-            setCategories(MOCK_CATEGORIES);
+          if (categoriesRes.ok) {
+            setCategories(await categoriesRes.json());
           }
         }
       } catch (err) {
         console.error("AssetList fetch error:", err);
-        if (isMounted) {
-          setAssets(MOCK_ASSETS);
-          setCategories(MOCK_CATEGORIES);
-        }
       }
     };
 

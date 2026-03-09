@@ -15,20 +15,13 @@ export const API_BASE = process.env.REACT_APP_API_URL ||
         (isVercel ? 'https://assets-backend-lakshmi2214.vercel.app' :
             `https://${hostname.replace('frontend', 'backend')}`));
 
+// Standalone mode is permanently disabled for production
+localStorage.setItem('standalone_mode', 'false');
 
-
-// Standalone mode should be FALSE by default so it uses the REAL backend
-if (localStorage.getItem('standalone_mode') === null) {
-    localStorage.setItem('standalone_mode', 'false');
-}
-
-export const isStandaloneMode = () => localStorage.getItem('standalone_mode') === 'true';
+export const isStandaloneMode = () => false;
 
 export function setStandaloneMode(value) {
-    localStorage.setItem('standalone_mode', value ? 'true' : 'false');
-    // Force logout when switching modes to prevent token mismatch
-    localStorage.removeItem('access');
-    localStorage.removeItem('refresh');
+    localStorage.setItem('standalone_mode', 'false');
 }
 
 export const MOCK_TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJ1c2VybmFtZSI6ImRlbW9fdXNlciJ9.signature';
