@@ -12,8 +12,11 @@ import VerifyEmail from './VerifyEmail';
 import Footer from './Footer';
 import ChatBot from './ChatBot';
 
+import { API_BASE, isStandaloneMode, setStandaloneMode } from './auth';
+
 function App() {
   const [user, setUser] = useState(null);
+  const [standalone, setStandalone] = useState(isStandaloneMode());
 
   useEffect(() => {
     const token = localStorage.getItem('access');
@@ -27,6 +30,13 @@ function App() {
     localStorage.removeItem('refresh');
     setUser(null);
     window.location.href = '/login';
+  };
+
+  const toggleMode = () => {
+    const newVal = !standalone;
+    setStandaloneMode(newVal);
+    setStandalone(newVal);
+    window.location.reload(); // Reload to refresh data sources
   };
 
   return (
@@ -57,7 +67,16 @@ function App() {
                 {user && <Nav.Link as={Link} to="/book-asset" className="px-3">Reservations</Nav.Link>}
                 {user && <Nav.Link as={Link} to="/bookings" className="px-3">My History</Nav.Link>}
               </Nav>
-              <Nav className="gap-2">
+              <Nav className="gap-2 align-items-center">
+                <Button
+                  variant={standalone ? "outline-warning" : "outline-success"}
+                  size="sm"
+                  className="me-2 fw-bold"
+                  onClick={toggleMode}
+                  title={standalone ? "Using Mock Data (Off-line)" : "Using Real Backend (Live)"}
+                >
+                  {standalone ? "● STANDALONE" : "● LIVE"}
+                </Button>
                 {user ? (
                   <Button variant="link" className="text-light text-decoration-none fw-bold" onClick={handleLogout}>
                     Sign Out

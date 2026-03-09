@@ -7,18 +7,17 @@ const isVercel = hostname.includes('vercel.app');
 
 // Priority:
 // 1. Environment variable (standard practice)
-// 2. Vercel Production Backend (fallback for live site)
-// 3. Android Emulator bridge (for mobile testing)
-// 4. Localhost (for web development)
+// 2. Localhost (for web development)
+// 3. Current origin (if both on same domain)
+// 4. Fallbacks
 export const API_BASE = process.env.REACT_APP_API_URL ||
-    (isVercel ? 'https://asset-booking-backend.vercel.app' :
-        (Capacitor.isNativePlatform() ? 'http://10.0.2.2:8050' :
-            (isLocalhost ? 'http://localhost:8050' : `http://${hostname}:8050`)));
+    (isLocalhost ? 'http://localhost:8050' :
+        (isVercel ? 'https://assets-backend-lakshmi2214.vercel.app' :
+            `https://${hostname.replace('frontend', 'backend')}`));
 
-// Check if we should use mock data (if backend is down or explicitly requested)
-// Enable standalone mode by default for frontend-only usage
+// Standalone mode should be FALSE by default so it uses the REAL backend
 if (localStorage.getItem('standalone_mode') === null) {
-    localStorage.setItem('standalone_mode', 'true');
+    localStorage.setItem('standalone_mode', 'false');
 }
 
 export const isStandaloneMode = () => localStorage.getItem('standalone_mode') === 'true';
