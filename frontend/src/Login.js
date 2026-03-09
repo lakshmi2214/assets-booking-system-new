@@ -18,17 +18,11 @@ export default function Login({ setUser }) {
     try {
       setMsg('Logging in...');
       let tokenRes;
-      try {
-        tokenRes = await fetch(`${API_BASE}/api/v1/auth/token/`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ username, password })
-        });
-      } catch (err) {
-        console.error('Backend connection failed:', err);
-        // Silently fallback to mock login if backend is down
-        tokenRes = await mockLogin(username, password);
-      }
+      tokenRes = await fetch(`${API_BASE}/api/v1/auth/token/`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password })
+      });
 
       if (tokenRes.ok) {
         const tokens = await tokenRes.json();
