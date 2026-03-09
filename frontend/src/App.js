@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link, Navigate } from 'react-router-dom';
 import { Navbar, Nav, Container, Button, Badge } from 'react-bootstrap';
 import Signup from './Signup';
 import Login from './Login';
@@ -82,10 +82,13 @@ function App() {
             <Route path="/signup" element={<Signup setUser={setUser} />} />
             <Route path="/verify-email" element={<VerifyEmail />} />
             <Route path="/login" element={<Login setUser={setUser} />} />
-            <Route path="/assets" element={user ? <AssetList /> : <Login setUser={setUser} />} />
-            <Route path="/assets/:id" element={user ? <AssetDetail /> : <Login setUser={setUser} />} />
-            <Route path="/book-asset" element={user ? <AssetBooking /> : <Login setUser={setUser} />} />
-            <Route path="/bookings" element={user ? <BookingList /> : <Login setUser={setUser} />} />
+
+            <Route path="/assets" element={user ? <AssetList /> : <Navigate to="/login" />} />
+            <Route path="/assets/:id" element={user ? <AssetDetail /> : <Navigate to="/login" />} />
+            <Route path="/book-asset" element={user ? <AssetBooking /> : <Navigate to="/login" />} />
+            <Route path="/bookings" element={user ? <BookingList /> : <Navigate to="/login" />} />
+
+            <Route path="*" element={<Navigate to="/" />} />
           </Routes>
         </Container>
 

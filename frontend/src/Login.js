@@ -66,6 +66,7 @@ export default function Login({ setUser }) {
             placeholder="Enter username"
             value={username}
             onChange={e => setUsername(e.target.value)}
+            autoComplete="username"
           />
         </Form.Group>
         <Form.Group className="mb-3">
@@ -75,6 +76,7 @@ export default function Login({ setUser }) {
             placeholder="Enter password"
             value={password}
             onChange={e => setPassword(e.target.value)}
+            autoComplete="current-password"
           />
         </Form.Group>
         <Button variant="primary" type="submit" className="w-100">Login</Button>
