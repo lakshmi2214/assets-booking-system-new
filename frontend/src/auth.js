@@ -11,9 +11,14 @@ const isVercel = hostname.includes('vercel.app');
 // 3. Current origin (if both on same domain)
 // 4. Fallbacks
 export const API_BASE = process.env.REACT_APP_API_URL ||
-    (isLocalhost ? 'http://localhost:8050' :
+    (isLocalhost ? 'http://127.0.0.1:8050' :
         (isVercel ? 'https://assets-backend-lakshmi2214.vercel.app' :
             `https://${hostname.replace('frontend', 'backend')}`));
+
+// Ensure the local dev with 127.0.0.1:3001 works correctly
+if (isLocalhost && hostname === '127.0.0.1') {
+    // API_BASE for locally running backend
+}
 
 // Standalone mode should be FALSE by default so it uses the REAL backend
 if (localStorage.getItem('standalone_mode') === null) {
@@ -194,10 +199,7 @@ export async function authorizedFetch(url, options = {}, allowRetry = true) {
     try {
         response = await fetch(url, requestOptions);
     } catch (err) {
-        if (err.message === 'Failed to fetch') {
-            setStandaloneMode(true);
-            return authorizedFetch(url, options, allowRetry);
-        }
+        // Stop silent fallback to standalone
         throw err;
     }
 
