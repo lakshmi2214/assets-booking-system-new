@@ -145,6 +145,11 @@ CSRF_TRUSTED_ORIGINS = [
     'https://asset-booking-frontendn.vercel.app',
 ]
 
+# Session and Security Configuration
+SESSION_COOKIE_AGE = 86400  # 1 day 
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False
+SESSION_SAVE_EVERY_REQUEST = True 
+
 # Email Configuration
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
