@@ -1,7 +1,7 @@
 {
   "name": "asset_booking_system",
   "version": "1.0.0",
-  "homepage": "https://asset-booking-frontendn.vercel.app",
+  "homepage": ".",
   "private": true,
   "dependencies": {
     "@capacitor/android": "^8.0.2",
@@ -24,9 +24,9 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "mobile:build": "npm run build && npx cap sync",
-    "mobile:open": "npx cap open android"
+    "mobile:open": "npx cap open android",
+    "sync": "python ../sync_db_to_mock.py"
   },
-  "proxy": "http://localhost:8050",
   "browserslist": {
     "production": [
       ">0.2%",
@@ -40,6 +40,7 @@
     ]
   },
   "devDependencies": {
-    "@capacitor/assets": "^3.0.5"
+    "@capacitor/assets": "^3.0.5",
+    "baseline-browser-mapping": "^2.10.0"
   }
 }

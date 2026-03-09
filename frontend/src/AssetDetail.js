@@ -1,36 +1,83 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Container, Row, Col, Card, Badge, Button, Spinner } from 'react-bootstrap';
 import { API_BASE } from './auth';
 
-export default function AssetDetail(){
+export default function AssetDetail() {
   const { id } = useParams();
   const [asset, setAsset] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  useEffect(()=>{
+  useEffect(() => {
+    let isMounted = true;
     setLoading(true);
-    fetch(`${API_BASE}/api/v1/assets/${id}/`, {
-      method: 'GET',
-      headers: {'Content-Type': 'application/json'},
-    })
-      .then(r => {
-        if (!r.ok) throw new Error(`HTTP ${r.status}`);
-        return r.json();
-      })
-      .then(asset => {
-        setAsset(asset);
-        setError(null);
-      })
-      .catch((err) => {
-        console.error('Error loading asset:', err);
-        setError('Failed to load asset details');
-      })
-      .finally(() => setLoading(false));
-  },[id]);
 
-  if(loading) return (
+    const loadData = async () => {
+      // 1. Check for standalone mode
+      const useMock = localStorage.getItem('standalone_mode') === 'true';
+
+      if (useMock) {
+        if (isMounted) {
+          import('./mockData').then(m => {
+            const mockAsset = m.MOCK_ASSETS.find(a => String(a.id) === String(id));
+            if (mockAsset) {
+              setAsset(mockAsset);
+              setError(null);
+            } else {
+              setError('Failed to load asset details');
+            }
+            setLoading(false);
+          });
+        }
+        return;
+      }
+
+      // 2. Try fetch with timeout
+      try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 5000);
+
+        const response = await fetch(`${API_BASE}/api/v1/assets/${id}/`, {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json' },
+          signal: controller.signal
+        });
+
+        clearTimeout(timeoutId);
+
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        const data = await response.json();
+
+        if (isMounted) {
+          setAsset(data);
+          setError(null);
+        }
+      } catch (err) {
+        console.error('Error loading asset, falling back to mock:', err);
+        if (isMounted) {
+          import('./mockData').then(m => {
+            const mockAsset = m.MOCK_ASSETS.find(a => String(a.id) === String(id));
+            if (mockAsset) {
+              setAsset(mockAsset);
+              setError(null);
+            } else {
+              setError('Failed to load asset details');
+            }
+          }).catch(() => {
+            setError('Failed to load asset details');
+          });
+        }
+      } finally {
+        if (isMounted) setLoading(false);
+      }
+    };
+
+    loadData();
+    return () => { isMounted = false; };
+  }, [id]);
+
+  if (loading) return (
     <Container className="text-center mt-5">
       <Spinner animation="border" role="status">
         <span className="visually-hidden">Loading...</span>
@@ -39,7 +86,7 @@ export default function AssetDetail(){
     </Container>
   );
 
-  if(error) return (
+  if (error) return (
     <Container className="mt-5">
       <div className="alert alert-danger">{error}</div>
       <Link to="/assets">
@@ -48,7 +95,7 @@ export default function AssetDetail(){
     </Container>
   );
 
-  if(!asset) return (
+  if (!asset) return (
     <Container className="mt-5">
       <div className="alert alert-warning">Asset not found</div>
       <Link to="/assets">
@@ -67,14 +114,14 @@ export default function AssetDetail(){
         <Col md={6}>
           {asset.image_url ? (
             <div>
-              <img 
-                src={asset.image_url} 
+              <img
+                src={asset.image_url}
                 alt={asset.name}
-                style={{width: '100%', borderRadius: '8px', maxHeight: '500px', objectFit: 'cover'}}
+                style={{ width: '100%', borderRadius: '8px', maxHeight: '500px', objectFit: 'cover' }}
               />
             </div>
           ) : (
-            <div 
+            <div
               style={{
                 width: '100%',
                 height: '400px',
@@ -96,11 +143,19 @@ export default function AssetDetail(){
           <Card className="shadow-sm">
             <Card.Body>
               <h3 className="mb-3">{asset.name}</h3>
-              
+
               <div className="mb-3">
-                <Badge bg={asset.available ? 'success' : 'danger'} className="me-2">
-                  {asset.available ? 'Available' : 'Not Available'}
+                <Badge
+                  bg={asset.status?.includes('Available') ? 'success' : 'danger'}
+                  className="me-2"
+                >
+                  {asset.status || (asset.available ? 'Available' : 'Not Available')}
                 </Badge>
+                {asset.total_quantity > 1 && (
+                  <Badge bg="secondary" className="me-2">
+                    Total Units: {asset.total_quantity}
+                  </Badge>
+                )}
                 {asset.location && (
                   <Badge bg="info">
                     Location: {asset.location.name}
@@ -125,7 +180,7 @@ export default function AssetDetail(){
               {asset.details && (
                 <div className="mb-3">
                   <strong>Specifications:</strong>
-                  <p style={{whiteSpace: 'pre-wrap'}}>{asset.details}</p>
+                  <p style={{ whiteSpace: 'pre-wrap' }}>{asset.details}</p>
                 </div>
               )}
 

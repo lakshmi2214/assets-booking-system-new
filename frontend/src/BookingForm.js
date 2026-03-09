@@ -13,6 +13,7 @@ export default function AssetBooking() {
   const [selectedCategoryId, setSelectedCategoryId] = useState(null);
 
   const [selectedAssetId, setSelectedAssetId] = useState('');
+  const [quantity, setQuantity] = useState(1);
   const [start, setStart] = useState(null);
   const [end, setEnd] = useState(null);
   const [purpose, setPurpose] = useState('');
@@ -30,41 +31,98 @@ export default function AssetBooking() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    let isMounted = true;
     setLoading(true);
-    Promise.all([
-      fetch(`${API_BASE}/api/v1/assets/`, { headers: { 'Content-Type': 'application/json' } }).then(r => r.json()),
-      fetch(`${API_BASE}/api/v1/categories/`, { headers: { 'Content-Type': 'application/json' } }).then(r => {
-        if (r.ok) return r.json();
-        return [];
-      }).catch(() => [])
-    ])
-      .then(([assetsData, categoriesData]) => {
-        setAssets(assetsData);
-        if (Array.isArray(categoriesData)) {
-          setCategories(categoriesData);
+
+    const loadInitialData = async () => {
+      // 1. Check if we should use mock data immediately
+      const useMock = !API_BASE || localStorage.getItem('standalone_mode') === 'true';
+
+      if (useMock) {
+        console.log("Using mock data in BookingForm");
+        if (isMounted) {
+          setAssets(MOCK_ASSETS);
+          setCategories(MOCK_CATEGORIES);
+          const map = new Map();
+          MOCK_ASSETS.forEach((a) => {
+            if (a.location) map.set(a.location.id, a.location);
+          });
+          setLocations(Array.from(map.values()));
+          setLoading(false);
+        }
+        return;
+      }
+
+      // 2. Try fetching from backend with a timeout
+      try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 5000); // 5s timeout
+
+        const [assetsRes, categoriesRes] = await Promise.all([
+          fetch(`${API_BASE}/api/v1/assets/`, {
+            headers: { 'Content-Type': 'application/json' },
+            signal: controller.signal
+          }),
+          fetch(`${API_BASE}/api/v1/categories/`, {
+            headers: { 'Content-Type': 'application/json' },
+            signal: controller.signal
+          }).catch(() => ({ ok: false }))
+        ]);
+
+        clearTimeout(timeoutId);
+
+        let assetsData = [];
+        let categoriesData = [];
+
+        if (assetsRes.ok) {
+          assetsData = await assetsRes.json();
         }
 
-        const map = new Map();
-        assetsData.forEach((a) => {
-          if (a.location) map.set(a.location.id, a.location);
-        });
-        setLocations(Array.from(map.values()));
-        setMsg('');
-      })
-      .catch((err) => {
-        console.warn('Backend not matching or down, loading demo data:', err);
+        if (categoriesRes.ok) {
+          categoriesData = await categoriesRes.json();
+        }
 
-        // Fallback to mock data
-        setAssets(MOCK_ASSETS);
-        setCategories(MOCK_CATEGORIES);
+        if (isMounted) {
+          if (Array.isArray(assetsData) && assetsData.length > 0) {
+            setAssets(assetsData);
+            const map = new Map();
+            assetsData.forEach((a) => {
+              if (a.location) map.set(a.location.id, a.location);
+            });
+            setLocations(Array.from(map.values()));
+          } else {
+            setAssets(MOCK_ASSETS);
+            const map = new Map();
+            MOCK_ASSETS.forEach((a) => {
+              if (a.location) map.set(a.location.id, a.location);
+            });
+            setLocations(Array.from(map.values()));
+          }
 
-        const map = new Map();
-        MOCK_ASSETS.forEach((a) => {
-          if (a.location) map.set(a.location.id, a.location);
-        });
-        setLocations(Array.from(map.values()));
-      })
-      .finally(() => setLoading(false));
+          if (Array.isArray(categoriesData) && categoriesData.length > 0) {
+            setCategories(categoriesData);
+          } else {
+            setCategories(MOCK_CATEGORIES);
+          }
+        }
+      } catch (err) {
+        console.error("Fetch error, falling back to mock:", err);
+        if (isMounted) {
+          setAssets(MOCK_ASSETS);
+          setCategories(MOCK_CATEGORIES);
+          const map = new Map();
+          MOCK_ASSETS.forEach((a) => {
+            if (a.location) map.set(a.location.id, a.location);
+          });
+          setLocations(Array.from(map.values()));
+        }
+      } finally {
+        if (isMounted) setLoading(false);
+      }
+    };
+
+    loadInitialData();
+    return () => { isMounted = false; };
   }, []);
 
   function toISO(dt) {
@@ -74,6 +132,7 @@ export default function AssetBooking() {
 
   function openBookingForm(assetId) {
     setSelectedAssetId(assetId);
+    setQuantity(1);
     setConfirmStage(false);
     setMsg('');
     setStart(null);
@@ -115,6 +174,7 @@ export default function AssetBooking() {
 
     const body = {
       asset_id: asset.id,
+      quantity: Number(quantity),
       start_datetime: toISO(start),
       end_datetime: toISO(end),
       purpose: purpose || `Booking for ${fullName}`,
@@ -202,6 +262,7 @@ export default function AssetBooking() {
       start,
       end,
       purpose,
+      quantity,
     };
   }, [
     assets,
@@ -215,6 +276,7 @@ export default function AssetBooking() {
     end,
     purpose,
     selectedAssetId,
+    quantity
   ]);
 
   const filteredAssets = useMemo(() => {
@@ -333,12 +395,12 @@ export default function AssetBooking() {
                       )}
                       <Badge
                         bg={
-                          asset.status === 'Available' ? 'success' :
+                          asset.status?.includes('Available') ? 'success' :
                             asset.status === 'Pending' ? 'warning' : 'danger'
                         }
                         className="asset-status-badge"
                       >
-                        {asset.status}
+                        {asset.status || (asset.available ? 'Available' : 'Out of Stock')}
                       </Badge>
                     </div>
 
@@ -391,15 +453,20 @@ export default function AssetBooking() {
                   )}
                 </Col>
                 <Col md={8}>
-                  <h4>{assets.find((a) => a.id === Number(selectedAssetId))?.name}</h4>
+                  <div className="d-flex justify-content-between align-items-start">
+                    <h4>{assets.find((a) => a.id === Number(selectedAssetId))?.name}</h4>
+                    <Badge bg="info" style={{ fontSize: '0.9rem' }}>
+                      {assets.find((a) => a.id === Number(selectedAssetId))?.status}
+                    </Badge>
+                  </div>
                   {assets.find((a) => a.id === Number(selectedAssetId))?.serial_number && (
-                    <p><strong>Serial:</strong> {assets.find((a) => a.id === Number(selectedAssetId))?.serial_number}</p>
+                    <p className="mb-1"><strong>Serial:</strong> {assets.find((a) => a.id === Number(selectedAssetId))?.serial_number}</p>
                   )}
                   {assets.find((a) => a.id === Number(selectedAssetId))?.location && (
-                    <p><strong>Location:</strong> {assets.find((a) => a.id === Number(selectedAssetId))?.location.name}</p>
+                    <p className="mb-1"><strong>Location:</strong> {assets.find((a) => a.id === Number(selectedAssetId))?.location.name}</p>
                   )}
                   {assets.find((a) => a.id === Number(selectedAssetId))?.description && (
-                    <p>{assets.find((a) => a.id === Number(selectedAssetId))?.description}</p>
+                    <p className="mt-2 text-muted small">{assets.find((a) => a.id === Number(selectedAssetId))?.description}</p>
                   )}
                 </Col>
               </Row>
@@ -412,6 +479,28 @@ export default function AssetBooking() {
             </Card.Header>
             <Card.Body>
               <Form onSubmit={handleInitialSubmit}>
+                <div className="mb-4">
+                  <h6 className="mb-3 text-muted">Asset Quantity</h6>
+                  <Row>
+                    <Col md={6}>
+                      <Form.Group>
+                        <Form.Label><strong>How many units? *</strong></Form.Label>
+                        <Form.Control
+                          type="number"
+                          min="1"
+                          max={assets.find((a) => a.id === Number(selectedAssetId))?.total_quantity || 1}
+                          value={quantity}
+                          onChange={(e) => setQuantity(e.target.value)}
+                          required
+                        />
+                        <Form.Text className="text-muted">
+                          Available total: {assets.find((a) => a.id === Number(selectedAssetId))?.total_quantity || 1} units
+                        </Form.Text>
+                      </Form.Group>
+                    </Col>
+                  </Row>
+                </div>
+
                 <h6 className="mb-3 text-muted">Booking Time</h6>
                 <Row className="mb-4">
                   <Col md={6}>
@@ -556,6 +645,10 @@ export default function AssetBooking() {
             <Row className="mb-3">
               <Col sm={4}><strong>Asset:</strong></Col>
               <Col sm={8}>{summary.asset}</Col>
+            </Row>
+            <Row className="mb-3">
+              <Col sm={4}><strong>Quantity:</strong></Col>
+              <Col sm={8}><Badge bg="primary">{summary.quantity} Unit(s)</Badge></Col>
             </Row>
             <Row className="mb-3">
               <Col sm={4}><strong>Name:</strong></Col>

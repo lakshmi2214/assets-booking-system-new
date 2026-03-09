@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Form, Button, Container, Alert } from 'react-bootstrap';
-import { API_BASE } from './auth';
+import { API_BASE, mockLogin, mockSignup, isStandaloneMode, setStandaloneMode } from './auth';
 
 export default function Signup({ setUser }) {
   const [username, setUsername] = useState('');
@@ -22,26 +22,57 @@ export default function Signup({ setUser }) {
       setMsg('Password must be at least 3 characters');
       return;
     }
+
+    const requestData = {
+      username,
+      password,
+      email: email || undefined,
+      first_name: fullName || undefined,
+      phone: mobile || undefined
+    };
+
     try {
       setMsg('Signing up...');
-      const res = await fetch(`${API_BASE}/api/v1/auth/signup/`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          username,
-          password,
-          email: email || undefined,
-          first_name: fullName || undefined,
-          phone: mobile || undefined
-        })
-      });
+
+      let res;
+      if (isStandaloneMode()) {
+        res = await mockSignup(requestData);
+      } else {
+        try {
+          res = await fetch(`${API_BASE}/api/v1/auth/signup/`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(requestData)
+          });
+        } catch (err) {
+          if (err.message === 'Failed to fetch') {
+            console.warn('Backend connection failed, switching to demo mode');
+            setStandaloneMode(true);
+            res = await mockSignup(requestData);
+          } else {
+            throw err;
+          }
+        }
+      }
+
       if (res.ok) {
         // Auto-login after signup
-        const tokenRes = await fetch(`${API_BASE}/api/v1/auth/token/`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ username, password })
-        });
+        let tokenRes;
+        if (isStandaloneMode()) {
+          tokenRes = await mockLogin(username, password);
+        } else {
+          try {
+            tokenRes = await fetch(`${API_BASE}/api/v1/auth/token/`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ username, password })
+            });
+          } catch (err) {
+            setStandaloneMode(true);
+            tokenRes = await mockLogin(username, password);
+          }
+        }
+
         if (tokenRes.ok) {
           const tokens = await tokenRes.json();
           localStorage.setItem('access', tokens.access);
@@ -63,11 +94,7 @@ export default function Signup({ setUser }) {
       }
     } catch (err) {
       console.error('Signup error:', err);
-      if (err.message === 'Failed to fetch') {
-        setMsg('Error: Could not connect to the backend server. Please ensure the backend is running on port 8050.');
-      } else {
-        setMsg('Error: ' + err.message);
-      }
+      setMsg('Error: ' + err.message);
     }
   }
 

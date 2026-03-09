@@ -268,6 +268,10 @@ export default function BookingList() {
 
                   <div className="mb-3 text-secondary" style={{ fontSize: '0.9rem' }}>
                     <div className="d-flex justify-content-between">
+                      <span><strong>Quantity:</strong></span>
+                      <span><Badge bg="info" text="dark" style={{ fontSize: '0.75rem' }}>{b.quantity || 1} Unit(s)</Badge></span>
+                    </div>
+                    <div className="d-flex justify-content-between">
                       <span><strong>Start:</strong></span>
                       <span>{formatDate(b.start_datetime)}</span>
                     </div>

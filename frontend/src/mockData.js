@@ -1,228 +1,402 @@
 export const MOCK_CATEGORIES = [
     {
-        id: 1,
-        name: 'Tripods',
-        subcategories: [
-            { id: 11, name: 'Travel Tripods' },
-            { id: 12, name: 'Heavy Duty Tripods' },
+        "id": 13,
+        "name": "Storage & Media",
+        "subcategories": [
+            {
+                "id": 11,
+                "name": "Lexar 80 GB memory cards"
+            },
+            {
+                "id": 12,
+                "name": "Lexar 160 GB memory cards"
+            }
         ]
     },
     {
-        id: 2,
-        name: 'Camera',
-        subcategories: [
-            { id: 21, name: 'DSLR' },
-            { id: 22, name: 'Mirrorless' },
-            { id: 23, name: 'Action Cameras' },
+        "id": 14,
+        "name": "Camera & Power",
+        "subcategories": [
+            {
+                "id": 13,
+                "name": "Sony FX3 cameras"
+            },
+            {
+                "id": 14,
+                "name": "Camera batteries"
+            },
+            {
+                "id": 15,
+                "name": "Battery chargers"
+            },
+            {
+                "id": 16,
+                "name": "50mm lens sony"
+            },
+            {
+                "id": 17,
+                "name": "50mm gmaster lens"
+            }
         ]
     },
     {
-        id: 3,
-        name: 'Lights',
-        subcategories: [
-            { id: 31, name: 'LED Panels' },
-            { id: 32, name: 'Fresnel' },
-            { id: 33, name: 'Spotlight' },
-            { id: 34, name: 'Light with Stand' },
+        "id": 15,
+        "name": "Audio Equipment",
+        "subcategories": [
+            {
+                "id": 18,
+                "name": "DJI Mic Mini"
+            },
+            {
+                "id": 19,
+                "name": "Audio-Technica AT2040 microphones"
+            },
+            {
+                "id": 20,
+                "name": "Shure SM58 microphone"
+            },
+            {
+                "id": 21,
+                "name": "presonus 10-channel audio mixer"
+            },
+            {
+                "id": 22,
+                "name": "Podcast mic stands"
+            },
+            {
+                "id": 23,
+                "name": "table podcast muc stand"
+            },
+            {
+                "id": 24,
+                "name": "Mic stand"
+            },
+            {
+                "id": 32,
+                "name": "Speakers 800w"
+            }
         ]
     },
     {
-        id: 4,
-        name: 'Mics',
-        subcategories: [
-            { id: 41, name: 'Wireless Mic' },
-            { id: 42, name: 'Podcast Mic' },
-            { id: 43, name: 'Condenser Mic' },
+        "id": 16,
+        "name": "Lighting Equipment",
+        "subcategories": [
+            {
+                "id": 25,
+                "name": "Godox 300 W bi-color lights (with softbox)"
+            },
+            {
+                "id": 26,
+                "name": "Godox 300 W RGB lights"
+            },
+            {
+                "id": 27,
+                "name": "85 cm grid softboxes"
+            }
         ]
     },
     {
-        id: 5,
-        name: 'Speakers',
-        subcategories: [
-            { id: 51, name: 'Portable Speakers' },
-            { id: 52, name: 'PA Systems' },
+        "id": 17,
+        "name": "Stands & support",
+        "subcategories": [
+            {
+                "id": 28,
+                "name": "Boom stands"
+            },
+            {
+                "id": 29,
+                "name": "Light stands"
+            },
+            {
+                "id": 30,
+                "name": "C-stand with screen holder"
+            }
         ]
     },
     {
-        id: 6,
-        name: 'Audio Mixer',
-        subcategories: [
-            { id: 61, name: 'Analog Mixers' },
-            { id: 62, name: 'Digital Mixers' },
+        "id": 18,
+        "name": "Backdrop",
+        "subcategories": [
+            {
+                "id": 31,
+                "name": "Green screen (9 ft)"
+            }
         ]
-    },
-    {
-        id: 7,
-        name: 'Battery and Chargers',
-        subcategories: [
-            { id: 71, name: 'Camera Batteries' },
-            { id: 72, name: 'Power Banks' },
-        ]
-    },
-    {
-        id: 8,
-        name: 'Mikes',
-        subcategories: [
-            { id: 81, name: 'Wireless' },
-            { id: 82, name: 'Condenser' },
-            { id: 83, name: 'Dynamic' },
-        ]
-    },
+    }
 ];
 
 export const MOCK_ASSETS = [
     {
-        id: 1,
-        name: 'Professional Tripod',
-        serial_number: 'TRI-001',
-        description: 'Heavy duty tripod for video and photography',
-        location: { id: 1, name: 'Main Office' },
-        status: 'Available',
-        image_url: 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=500&q=80',
-        category: { id: 1, name: 'Tripods' },
-        subcategory: { id: 12, name: 'Heavy Duty Tripods' }
+        "id": 16,
+        "name": "160 gb lexar card",
+        "serial_number": "01",
+        "description": "160 gb lexar card",
+        "location": {
+            "id": 1,
+            "name": "Bangalore"
+        },
+        "status": "Available",
+        "total_quantity": 2,
+        "image_url": "/media/assets/images/WhatsApp_Image_2026-02-26_at_3.02.42_PM.jpeg",
+        "category": {
+            "id": 13,
+            "name": "Storage & Media"
+        },
+        "subcategory": {
+            "id": 12,
+            "name": "Lexar 160 GB memory cards"
+        }
     },
     {
-        id: 2,
-        name: 'Travel Tripod Compact',
-        serial_number: 'TRI-002',
-        description: 'Lightweight travel tripod',
-        location: { id: 2, name: 'Warehouse A' },
-        status: 'Available',
-        image_url: 'https://images.unsplash.com/photo-1563201917-67da3638e55f?w=500&q=80',
-        category: { id: 1, name: 'Tripods' },
-        subcategory: { id: 11, name: 'Travel Tripods' }
+        "id": 17,
+        "name": "80gb lexar card",
+        "serial_number": "02",
+        "description": "",
+        "location": {
+            "id": 1,
+            "name": "Bangalore"
+        },
+        "status": "Available",
+        "total_quantity": 2,
+        "image_url": "/media/assets/images/WhatsApp_Image_2026-02-26_at_3.02.49_PM.jpeg",
+        "category": {
+            "id": 13,
+            "name": "Storage & Media"
+        },
+        "subcategory": {
+            "id": 11,
+            "name": "Lexar 80 GB memory cards"
+        }
     },
     {
-        id: 3,
-        name: 'Sony A6400 Camera',
-        serial_number: 'CAM-001',
-        description: 'Professional mirrorless camera',
-        location: { id: 1, name: 'Main Office' },
-        status: 'Available',
-        image_url: 'https://images.unsplash.com/photo-1516724562728-afc824a36e84?w=500&q=80',
-        category: { id: 2, name: 'Camera' },
-        subcategory: { id: 22, name: 'Mirrorless' }
+        "id": 18,
+        "name": "Sony fx3",
+        "serial_number": "03",
+        "description": "Sony fx3",
+        "location": {
+            "id": 1,
+            "name": "Bangalore"
+        },
+        "status": "Available",
+        "total_quantity": 3,
+        "image_url": "/media/assets/images/WhatsApp_Image_2026-02-26_at_3.03.44_PM.jpeg",
+        "category": {
+            "id": 14,
+            "name": "Camera & Power"
+        },
+        "subcategory": {
+            "id": 13,
+            "name": "Sony FX3 cameras"
+        }
     },
     {
-        id: 4,
-        name: 'Canon EOS 5D',
-        serial_number: 'CAM-002',
-        description: 'Full-frame DSLR camera',
-        location: { id: 1, name: 'Main Office' },
-        status: 'Available',
-        image_url: 'https://images.unsplash.com/photo-1502920917128-1aa500764cbd?w=500&q=80',
-        category: { id: 2, name: 'Camera' },
-        subcategory: { id: 21, name: 'DSLR' }
+        "id": 19,
+        "name": "Dji mic mini",
+        "serial_number": "04",
+        "description": "Dji mic mini",
+        "location": {
+            "id": 1,
+            "name": "Bangalore"
+        },
+        "status": "Available",
+        "total_quantity": 1,
+        "image_url": "/media/assets/images/WhatsApp_Image_2026-02-26_at_3.04.45_PM.jpeg",
+        "category": {
+            "id": 15,
+            "name": "Audio Equipment"
+        },
+        "subcategory": {
+            "id": 18,
+            "name": "DJI Mic Mini"
+        }
     },
     {
-        id: 5,
-        name: 'LED Panel Light 100W',
-        serial_number: 'LGT-001',
-        description: 'Bi-color LED panel for studio lighting',
-        location: { id: 1, name: 'Main Office' },
-        status: 'Available',
-        image_url: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=500&q=80',
-        category: { id: 3, name: 'Lights' },
-        subcategory: { id: 31, name: 'LED Panels' }
+        "id": 20,
+        "name": "Battery",
+        "serial_number": "05",
+        "description": "Battery",
+        "location": {
+            "id": 1,
+            "name": "Bangalore"
+        },
+        "status": "Available",
+        "total_quantity": 3,
+        "image_url": "/media/assets/images/WhatsApp_Image_2026-02-26_at_3.05.25_PM.jpeg",
+        "category": {
+            "id": 14,
+            "name": "Camera & Power"
+        },
+        "subcategory": {
+            "id": 15,
+            "name": "Battery chargers"
+        }
     },
     {
-        id: 6,
-        name: 'Light with Stand Kit',
-        serial_number: 'LGT-002',
-        description: 'Complete lighting kit with adjustable stand',
-        location: { id: 2, name: 'Warehouse A' },
-        status: 'Available',
-        image_url: 'https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=500&q=80',
-        category: { id: 3, name: 'Lights' },
-        subcategory: { id: 34, name: 'Light with Stand' }
+        "id": 21,
+        "name": "Battery charger",
+        "serial_number": "06",
+        "description": "Battery charger",
+        "location": {
+            "id": 1,
+            "name": "Bangalore"
+        },
+        "status": "Available",
+        "total_quantity": 1,
+        "image_url": "/media/assets/images/WhatsApp_Image_2026-02-26_at_3.05.55_PM.jpeg",
+        "category": {
+            "id": 14,
+            "name": "Camera & Power"
+        },
+        "subcategory": {
+            "id": 15,
+            "name": "Battery chargers"
+        }
     },
     {
-        id: 7,
-        name: 'Wireless Lapel Mic',
-        serial_number: 'MIC-001',
-        description: 'Professional wireless lapel microphone system',
-        location: { id: 1, name: 'Main Office' },
-        status: 'Available',
-        image_url: 'https://images.unsplash.com/photo-1585386959984-a4155224a1ad?w=500&q=80',
-        category: { id: 4, name: 'Mics' },
-        subcategory: { id: 41, name: 'Wireless Mic' }
+        "id": 22,
+        "name": "50mm sony lens",
+        "serial_number": "07",
+        "description": "50mm sony lens",
+        "location": {
+            "id": 1,
+            "name": "Bangalore"
+        },
+        "status": "Available",
+        "total_quantity": 1,
+        "image_url": "/media/assets/images/WhatsApp_Image_2026-02-26_at_3.07.17_PM.jpeg",
+        "category": {
+            "id": 14,
+            "name": "Camera & Power"
+        },
+        "subcategory": {
+            "id": 16,
+            "name": "50mm lens sony"
+        }
     },
     {
-        id: 8,
-        name: 'Podcast USB Mic',
-        serial_number: 'MIC-002',
-        description: 'USB condenser microphone for podcasting',
-        location: { id: 1, name: 'Main Office' },
-        status: 'Available',
-        image_url: 'https://images.unsplash.com/photo-1590602847861-f357a9332bbc?w=500&q=80',
-        category: { id: 4, name: 'Mics' },
-        subcategory: { id: 42, name: 'Podcast Mic' }
+        "id": 23,
+        "name": "28 50 sony lens",
+        "serial_number": "08",
+        "description": "28 50 sony lens",
+        "location": {
+            "id": 1,
+            "name": "Bangalore"
+        },
+        "status": "Available",
+        "total_quantity": 2,
+        "image_url": "/media/assets/images/WhatsApp_Image_2026-02-26_at_3.07.53_PM.jpeg",
+        "category": {
+            "id": 14,
+            "name": "Camera & Power"
+        },
+        "subcategory": {
+            "id": 16,
+            "name": "50mm lens sony"
+        }
     },
     {
-        id: 9,
-        name: 'Portable Bluetooth Speaker',
-        serial_number: 'SPK-001',
-        description: 'Waterproof portable Bluetooth speaker',
-        location: { id: 2, name: 'Warehouse A' },
-        status: 'Available',
-        image_url: 'https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=500&q=80',
-        category: { id: 5, name: 'Speakers' },
-        subcategory: { id: 51, name: 'Portable Speakers' }
+        "id": 24,
+        "name": "Audio technica 2040 mic",
+        "serial_number": "09",
+        "description": "Audio technica 2040 mic",
+        "location": {
+            "id": 1,
+            "name": "Bangalore"
+        },
+        "status": "Available",
+        "total_quantity": 3,
+        "image_url": "/media/assets/images/WhatsApp_Image_2026-02-26_at_3.08.26_PM.jpeg",
+        "category": {
+            "id": 15,
+            "name": "Audio Equipment"
+        },
+        "subcategory": {
+            "id": 19,
+            "name": "Audio-Technica AT2040 microphones"
+        }
     },
     {
-        id: 10,
-        name: 'PA System 500W',
-        serial_number: 'SPK-002',
-        description: 'Professional PA system for events',
-        location: { id: 2, name: 'Warehouse A' },
-        status: 'Pending',
-        image_url: 'https://images.unsplash.com/photo-1547036967-23d11aacaee0?w=500&q=80',
-        category: { id: 5, name: 'Speakers' },
-        subcategory: { id: 52, name: 'PA Systems' }
+        "id": 25,
+        "name": "Podcast table mic stand",
+        "serial_number": "10",
+        "description": "Podcast table mic stand",
+        "location": {
+            "id": 1,
+            "name": "Bangalore"
+        },
+        "status": "Available",
+        "total_quantity": 1,
+        "image_url": "/media/assets/images/WhatsApp_Image_2026-02-26_at_3.09.13_PM.jpeg",
+        "category": {
+            "id": 15,
+            "name": "Audio Equipment"
+        },
+        "subcategory": {
+            "id": 23,
+            "name": "table podcast muc stand"
+        }
     },
     {
-        id: 11,
-        name: 'Analog Audio Mixer 8ch',
-        serial_number: 'MXR-001',
-        description: '8-channel analog audio mixing console',
-        location: { id: 1, name: 'Main Office' },
-        status: 'Available',
-        image_url: 'https://images.unsplash.com/photo-1598653222000-6b7b7a552625?w=500&q=80',
-        category: { id: 6, name: 'Audio Mixer' },
-        subcategory: { id: 61, name: 'Analog Mixers' }
+        "id": 26,
+        "name": "Podcast mic stand",
+        "serial_number": "11",
+        "description": "Podcast mic stand",
+        "location": {
+            "id": 1,
+            "name": "Bangalore"
+        },
+        "status": "Available",
+        "total_quantity": 3,
+        "image_url": "/media/assets/images/WhatsApp_Image_2026-02-26_at_3.10.54_PM_1.jpeg",
+        "category": {
+            "id": 15,
+            "name": "Audio Equipment"
+        },
+        "subcategory": {
+            "id": 22,
+            "name": "Podcast mic stands"
+        }
     },
     {
-        id: 12,
-        name: 'Camera Battery Pack',
-        serial_number: 'BAT-001',
-        description: 'High-capacity battery pack for cameras',
-        location: { id: 1, name: 'Main Office' },
-        status: 'Available',
-        image_url: 'https://images.unsplash.com/photo-1612837073745-717c4bc3e7d8?w=500&q=80',
-        category: { id: 7, name: 'Battery and Chargers' },
-        subcategory: { id: 71, name: 'Camera Batteries' }
+        "id": 27,
+        "name": "Mic stand",
+        "serial_number": "12",
+        "description": "Mic stand",
+        "location": {
+            "id": 1,
+            "name": "Bangalore"
+        },
+        "status": "Available",
+        "total_quantity": 1,
+        "image_url": "/media/assets/images/WhatsApp_Image_2026-02-26_at_3.11.08_PM.jpeg",
+        "category": {
+            "id": 15,
+            "name": "Audio Equipment"
+        },
+        "subcategory": {
+            "id": 24,
+            "name": "Mic stand"
+        }
     },
     {
-        id: 13,
-        name: 'Dynamic Mike XLR',
-        serial_number: 'MKE-001',
-        description: 'Professional dynamic microphone with XLR connector',
-        location: { id: 1, name: 'Main Office' },
-        status: 'Available',
-        image_url: 'https://images.unsplash.com/photo-1453738773917-9c3eff1db985?w=500&q=80',
-        category: { id: 8, name: 'Mikes' },
-        subcategory: { id: 83, name: 'Dynamic' }
-    },
-    {
-        id: 14,
-        name: 'Wireless Mike System',
-        serial_number: 'MKE-002',
-        description: 'Dual-channel wireless microphone system',
-        location: { id: 2, name: 'Warehouse A' },
-        status: 'Available',
-        image_url: 'https://images.unsplash.com/photo-1519892300165-cb5542fb47c7?w=500&q=80',
-        category: { id: 8, name: 'Mikes' },
-        subcategory: { id: 81, name: 'Wireless' }
-    },
+        "id": 28,
+        "name": "Shure sm 58 mic",
+        "serial_number": "13",
+        "description": "Shure sm 58 mic",
+        "location": {
+            "id": 1,
+            "name": "Bangalore"
+        },
+        "status": "Available",
+        "total_quantity": 1,
+        "image_url": "/media/assets/images/WhatsApp_Image_2026-02-26_at_3.12.29_PM.jpeg",
+        "category": {
+            "id": 15,
+            "name": "Audio Equipment"
+        },
+        "subcategory": {
+            "id": 20,
+            "name": "Shure SM58 microphone"
+        }
+    }
 ];
