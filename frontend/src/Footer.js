@@ -54,7 +54,7 @@ const Footer = () => {
                         <div className="d-flex flex-column gap-2">
                             <div className="d-flex align-items-center gap-2">
                                 <FaPhone style={{ color: '#f43f5e', fontSize: '0.8rem' }} />
-                                <div style={{ color: '#94a3b8', fontSize: '0.85rem' }}>+1 555 123 4567</div>
+                                <div style={{ color: '#94a3b8', fontSize: '0.85rem' }}>+91 63 66 333 444</div>
                             </div>
                             <div className="d-flex align-items-center gap-2">
                                 <FaEnvelope style={{ color: '#f43f5e', fontSize: '0.8rem' }} />

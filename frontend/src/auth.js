@@ -12,7 +12,7 @@ const isVercel = hostname.includes('vercel.app');
 // 4. Fallbacks
 export const API_BASE = process.env.REACT_APP_API_URL ||
     (isLocalhost ? 'http://127.0.0.1:8050' :
-        (isVercel ? 'https://assets-backend-lakshmi2214.vercel.app' :
+        (isVercel ? 'https://asset-booking-backend.vercel.app' :
             `https://${hostname.replace('frontend', 'backend')}`));
 
 // Standalone mode is permanently disabled for production

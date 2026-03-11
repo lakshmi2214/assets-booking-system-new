@@ -36,15 +36,33 @@ export default function AssetList() {
         clearTimeout(timeoutId);
 
         if (isMounted) {
-          if (assetsRes.ok) {
-            setAssets(await assetsRes.json());
+          if (assetsRes && assetsRes.ok) {
+            const assetsData = await assetsRes.json();
+            if (assetsData && assetsData.length > 0) {
+              setAssets(assetsData);
+            } else {
+              setAssets(MOCK_ASSETS);
+            }
+          } else {
+            setAssets(MOCK_ASSETS);
           }
-          if (categoriesRes.ok) {
-            setCategories(await categoriesRes.json());
+          if (categoriesRes && categoriesRes.ok) {
+            const categoriesData = await categoriesRes.json();
+            if (categoriesData && categoriesData.length > 0) {
+              setCategories(categoriesData);
+            } else {
+              setCategories(MOCK_CATEGORIES);
+            }
+          } else {
+            setCategories(MOCK_CATEGORIES);
           }
         }
       } catch (err) {
-        console.error("AssetList fetch error:", err);
+        console.error("AssetList fetch error, falling back to mock data:", err);
+        if (isMounted) {
+          setAssets(MOCK_ASSETS);
+          setCategories(MOCK_CATEGORIES);
+        }
       }
     };
 
@@ -52,18 +70,18 @@ export default function AssetList() {
     return () => { isMounted = false; };
   }, []);
 
-  // ─── Derive filtered assets ────────────────────────────────────────────────
+
   const filteredAssets = useMemo(() => {
-    if (!filter) return assets; // "All Assets" selected
+    if (!filter) return assets;
 
     if (filter.type === 'category') {
-      // Show every asset whose category id matches OR whose subcategory's parent id matches
+
       return assets.filter(a => {
         const catMatch = a.category && (
           a.category.id === filter.id ||
           String(a.category.id) === String(filter.id)
         );
-        // Some backends may not embed category on subcategory assets; also try name match
+
         const nameMatch = a.category && (
           a.category.name === (categories.find(c => c.id === filter.id) || {}).name
         );
@@ -90,7 +108,7 @@ export default function AssetList() {
     return assets;
   }, [assets, categories, filter]);
 
-  // ─── Helpers ───────────────────────────────────────────────────────────────
+
   const isCategoryActive = (catId) =>
     filter && filter.type === 'category' && filter.id === catId;
 
@@ -101,7 +119,7 @@ export default function AssetList() {
     isCategoryActive(cat.id) ||
     (cat.subcategories && cat.subcategories.some(s => isSubcategoryActive(s.id)));
 
-  // ─── Active badge label ────────────────────────────────────────────────────
+
   const activeLabel = useMemo(() => {
     if (!filter) return null;
     if (filter.type === 'category') {
@@ -117,7 +135,7 @@ export default function AssetList() {
     return null;
   }, [filter, categories]);
 
-  // ─── Render ────────────────────────────────────────────────────────────────
+
   return (
     <Container className="mt-4">
       <h2 className="mb-4">Available Assets</h2>
@@ -182,7 +200,7 @@ export default function AssetList() {
         })}
       </div>
 
-      {/* ── Active filter badge ── */}
+      { }
       {activeLabel && (
         <div className="mb-4 d-flex align-items-center gap-2">
           <span className="text-muted" style={{ fontSize: '0.9rem' }}>Filtering by:</span>

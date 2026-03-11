@@ -53,27 +53,56 @@ export default function AssetBooking() {
         clearTimeout(timeoutId);
 
         if (isMounted) {
-          if (assetsRes.ok) {
+          if (assetsRes && assetsRes.ok) {
             const assetsData = await assetsRes.json();
-            setAssets(assetsData);
+            if (assetsData && assetsData.length > 0) {
+              setAssets(assetsData);
+              const map = new Map();
+              assetsData.forEach((a) => {
+                if (a.location) map.set(a.location.id, a.location);
+              });
+              setLocations(Array.from(map.values()));
+            } else {
+              setMsg('No backend assets found, using mock data.');
+              setAssets(MOCK_ASSETS);
+              const map = new Map();
+              MOCK_ASSETS.forEach((a) => {
+                if (a.location) map.set(a.location.id, a.location);
+              });
+              setLocations(Array.from(map.values()));
+            }
+          } else {
+            setMsg('Error loading assets from backend, using mock data.');
+            setAssets(MOCK_ASSETS);
             const map = new Map();
-            assetsData.forEach((a) => {
+            MOCK_ASSETS.forEach((a) => {
               if (a.location) map.set(a.location.id, a.location);
             });
             setLocations(Array.from(map.values()));
-          } else {
-            setMsg('Error loading assets: ' + assetsRes.status);
           }
 
-          if (categoriesRes.ok) {
+          if (categoriesRes && categoriesRes.ok) {
             const categoriesData = await categoriesRes.json();
-            setCategories(categoriesData);
+            if (categoriesData && categoriesData.length > 0) {
+              setCategories(categoriesData);
+            } else {
+              setCategories(MOCK_CATEGORIES);
+            }
+          } else {
+            setCategories(MOCK_CATEGORIES);
           }
         }
       } catch (err) {
-        console.error("Fetch error:", err);
+        console.error("Fetch error, falling back to mock data:", err);
         if (isMounted) {
-          setMsg('Connection error: Could not reach the backend.');
+          setMsg('');
+          setAssets(MOCK_ASSETS);
+          const map = new Map();
+          MOCK_ASSETS.forEach((a) => {
+            if (a.location) map.set(a.location.id, a.location);
+          });
+          setLocations(Array.from(map.values()));
+          setCategories(MOCK_CATEGORIES);
         }
       } finally {
         if (isMounted) setLoading(false);
