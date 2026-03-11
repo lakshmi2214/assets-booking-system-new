@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import DatePicker from 'react-datepicker';
 import { Form, Button, Card, Alert, Row, Col, Badge, Modal, Dropdown, DropdownButton } from 'react-bootstrap';
 import 'react-datepicker/dist/react-datepicker.css';
-import { authorizedFetch, getValidAccessToken, clearTokens, API_BASE } from './auth';
+import { authorizedFetch, getValidAccessToken, clearTokens, API_BASE, isStandaloneMode } from './auth';
 
 import { MOCK_ASSETS, MOCK_CATEGORIES } from './mockData';
 
@@ -35,6 +35,21 @@ export default function AssetBooking() {
     setLoading(true);
 
     const loadInitialData = async () => {
+      // If in standalone mode, use mock data immediately
+      if (isStandaloneMode()) {
+        if (isMounted) {
+          setAssets(MOCK_ASSETS);
+          const map = new Map();
+          MOCK_ASSETS.forEach((a) => {
+            if (a.location) map.set(a.location.id, a.location);
+          });
+          setLocations(Array.from(map.values()));
+          setCategories(MOCK_CATEGORIES);
+        }
+        setLoading(false);
+        return;
+      }
+
       try {
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 8000);

@@ -15,13 +15,14 @@ export const API_BASE = process.env.REACT_APP_API_URL ||
         (isVercel ? 'https://asset-booking-backend.vercel.app' :
             `https://${hostname.replace('frontend', 'backend')}`));
 
-// Standalone mode is permanently disabled for production
-localStorage.setItem('standalone_mode', 'false');
-
-export const isStandaloneMode = () => false;
+// Standalone mode is enabled if on Vercel (production) to avoid backend dependency
+export const isStandaloneMode = () => {
+    const hostname = window.location.hostname;
+    return hostname.includes('vercel.app') || localStorage.getItem('standalone_mode') === 'true';
+};
 
 export function setStandaloneMode(value) {
-    localStorage.setItem('standalone_mode', 'false');
+    localStorage.setItem('standalone_mode', value ? 'true' : 'false');
 }
 
 export const MOCK_TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJ1c2VybmFtZSI6ImRlbW9fdXNlciJ9.signature';

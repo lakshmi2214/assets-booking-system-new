@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Card, Button, Container, Row, Col, Badge, Dropdown, DropdownButton } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { API_BASE } from './auth';
+import { API_BASE, isStandaloneMode } from './auth';
 import { MOCK_ASSETS, MOCK_CATEGORIES } from './mockData';
 
 export default function AssetList() {
@@ -18,6 +18,15 @@ export default function AssetList() {
     let isMounted = true;
 
     const loadData = async () => {
+      // If in standalone mode, use mock data immediately
+      if (isStandaloneMode()) {
+        if (isMounted) {
+          setAssets(MOCK_ASSETS);
+          setCategories(MOCK_CATEGORIES);
+        }
+        return;
+      }
+
       try {
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 8000);

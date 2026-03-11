@@ -10,7 +10,8 @@
         "install-frontend": "npm install --prefix frontend",
         "install-backend": "pip install -r backend/requirements.txt",
         "install-all": "npm run install-frontend && npm run install-backend",
-        "sync": "python sync_db_to_mock.py"
+        "sync": "python sync_db_to_mock.py",
+        "publish": "powershell ./publish.ps1"
     },
     "devDependencies": {
         "concurrently": "^8.2.2"
